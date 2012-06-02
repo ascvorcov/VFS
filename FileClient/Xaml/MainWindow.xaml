@@ -1,0 +1,88 @@
+﻿<Window x:Class="FileClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ctrl="clr-namespace:FileClient" 
+        Title="MainWindow" Height="577" Width="1000" ResizeMode="NoResize" Closed="Window_Closed" Icon="/Icons/App.png">
+    <Window.Resources>
+        <Style TargetType="{x:Type ListViewItem}">
+            <EventSetter Event="KeyDown" Handler="KeyEventHandler" />
+            <EventSetter Event="MouseDoubleClick" Handler="DoubleClickHandler" />
+        </Style>
+    </Window.Resources>
+    <StackPanel DataContext="{Binding Source={StaticResource viewModelLocator}, Path=FileBrowserModel}" >
+        <StackPanel Orientation="Horizontal">
+            <Button Name="newButton" HorizontalAlignment="Left" Focusable="False" Command="{Binding Path=NewCommand}" Margin="2,2,2,2">
+                <StackPanel Orientation="Horizontal">
+                     <Image Source="/Icons/New.png" />                   
+                    <TextBlock>New...</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Content="Copy..." Margin="2,2,2,2" Command="{Binding Path=CopyCommand}"></Button>
+            <Button Content="Move..." Margin="2,2,2,2" Command="{Binding Path=MoveCommand}"></Button>
+            <Button Content="Find..." Margin="2,2,2,2" Command="{Binding Path=FindCommand}"></Button>
+            <Button Content="Delete..." Margin="2,2,2,2" Command="{Binding Path=DeleteCommand}"></Button>
+        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <ComboBox Grid.Column="0" Grid.Row="0" Width="100" HorizontalAlignment="Left" ItemsSource="{Binding MountedDrives}" DisplayMemberPath="Name" SelectedItem="{Binding LeftPanel.ActiveDrive, Mode=TwoWay}" ></ComboBox>
+            <ListView Name="listViewLeft" ItemsSource="{Binding LeftPanel.Files}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="500" Height="500" SelectedItem="{Binding LeftPanel.SelectedFile, Mode=TwoWay}" GotFocus="LeftPanelGotFocus" SelectionMode="Single">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="Auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding IsDirectory, Converter={StaticResource imageConverter}}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Name" Width="Auto" DisplayMemberBinding="{Binding Path=Name}" />
+                        <GridViewColumn Header="Size" Width="Auto" DisplayMemberBinding="{Binding Path=Size}" />
+                        <GridViewColumn Header="Created" Width="Auto" DisplayMemberBinding="{Binding Path=Created}" />
+                        <GridViewColumn Header="Modified" Width="Auto" DisplayMemberBinding="{Binding Path=Modified}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <ComboBox Grid.Column="1" Grid.Row="0" Width="100" HorizontalAlignment="Left" ItemsSource="{Binding MountedDrives}" DisplayMemberPath="Name" SelectedItem="{Binding RightPanel.ActiveDrive, Mode=TwoWay}"></ComboBox>
+            <ListView Name="listViewRight" ItemsSource="{Binding RightPanel.Files}" Grid.Column="1" Grid.Row="1" Width="500" Height="500" SelectedItem="{Binding RightPanel.SelectedFile, Mode=TwoWay}" GotFocus="RightPanelGotFocus" SelectionMode="Single">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="Auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding IsDirectory, Converter={StaticResource imageConverter}}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Name" Width="Auto" DisplayMemberBinding="{Binding Path=Name}" />
+                        <GridViewColumn Header="Size" Width="Auto" DisplayMemberBinding="{Binding Path=Size}" />
+                        <GridViewColumn Header="Created" Width="Auto" DisplayMemberBinding="{Binding Path=Created}" />
+                        <GridViewColumn Header="Modified" Width="Auto" DisplayMemberBinding="{Binding Path=Modified}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <Popup x:Name="NewVolume" AllowsTransparency="True" StaysOpen="True" Placement="Center" IsOpen="{Binding NewVolumeDialog.IsVisible}">
+            <Viewbox>
+                <ctrl:NewVolume DataContext="{Binding NewVolumeDialog}"></ctrl:NewVolume>
+            </Viewbox>
+        </Popup>
+        <Popup x:Name="Find" AllowsTransparency="True" StaysOpen="True" Placement="Center" IsOpen="{Binding FindDialog.IsVisible}">
+            <Viewbox>
+                <ctrl:Find DataContext="{Binding FindDialog}"></ctrl:Find>
+            </Viewbox>
+        </Popup>
+        <Popup x:Name="Progress" AllowsTransparency="True" StaysOpen="True" IsOpen="{Binding ProgressPanel.ProgressVisible}" 
+               Placement="Bottom">
+            <Viewbox VerticalAlignment="Top">
+                <ctrl:Progress DataContext="{Binding ProgressPanel}"></ctrl:Progress>
+            </Viewbox>
+        </Popup>
+    </StackPanel>
+</Window>

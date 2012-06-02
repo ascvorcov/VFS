@@ -1,0 +1,10 @@
+﻿<Application x:Class="FileClient.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:ViewModel="clr-namespace:FileClient" 
+             StartupUri="/Xaml/MainWindow.xaml">
+    <Application.Resources>
+        <ViewModel:ViewModelLocator x:Key="viewModelLocator"  />
+        <ViewModel:ImageConverter x:Key="imageConverter" />
+    </Application.Resources>
+</Application>

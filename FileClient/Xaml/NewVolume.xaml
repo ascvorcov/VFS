@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="FileClient.NewVolume"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d">
+    <Grid>
+        <Border BorderBrush="Black" Background="White" Margin="1,1,1,1" BorderThickness="1">
+            <StackPanel>
+                <TextBlock Margin="5,5,5,5" Text="Volume path:" VerticalAlignment="Top" />
+                <TextBlock Margin="5,5,5,5" Width="Auto" Name="textBlockPath" Text="{Binding FullPathWithName}" VerticalAlignment="Top" />
+                <TextBlock Margin="5,5,5,5" Text="Volume name:" VerticalAlignment="Top" />
+                <TextBox   Margin="5,5,5,5" Name="textBoxName" Text="{Binding Path=VolumeName, NotifyOnTargetUpdated=True}"/>
+                <TextBlock Margin="5,5,5,5" Text="Volume size, Mb:" VerticalAlignment="Top" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Grid.Column="0" Margin="5,5,5,5" Name="comboBoxSize" Width="Auto" SelectedValue="{Binding VolumeSize, Mode=TwoWay}" SelectedIndex="0" ItemsSource="{Binding VolumeSizes}" HorizontalAlignment="Left">
+                    </ComboBox>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Grid.Column="1" Margin="5,5,5,5" Width="100" Name="btnCreate" Command="{Binding CreateCommand}" Content="Create Volume"></Button>
+                        <Button Grid.Column="1" Margin="5,5,5,5" Width="100" Name="btnCancel" Command="{Binding CancelCommand}" Content="Cancel"></Button>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
